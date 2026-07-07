@@ -1,4 +1,7 @@
 # depslib dependency file v1.0
-1743445502 source:c:\users\23168\desktop\1\csp-ready\file\csp\main.cpp
+1783303389 source:c:\users\23168\desktop\1\csp-ready\file\csp\main.cpp
 	<iostream>
+	<vector>
+	<algorithm>
+	<cmath>
 
