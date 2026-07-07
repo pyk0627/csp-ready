@@ -15,10 +15,64 @@ public:
             {
                 continue;
             }
+            /*
+            设 s=nums[a]+nums[a+1]+nums[a+2]+nums[a+3]。
+            如果 s>target，由于数组已经排序，后面无论怎么选，
+            选出的四个数的和不会比 s 还小，
+            所以后面不会找到等于 target 的四数之和了。
+            所以只要 s>target，就可以直接 break 外层循环了。
+
+            作者：灵茶山艾府
+            链接：https://leetcode.cn/problems/4sum/solutions/2344514/ji-zhi-you-hua-ji-yu-san-shu-zhi-he-de-z-1f0b/
+            来源：力扣（LeetCode）
+            著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+            */
+            if(nums[i]+nums[i+1]+nums[i+2]+nums[i+3]>target)
+            {
+                break;
+            }
+            /*
+            设 s=nums[a]+nums[n−3]+nums[n−2]+nums[n−1]。
+            如果 s<target，由于数组已经排序，
+            nums[a] 加上后面任意三个数都不会超过 s，
+            所以无法在后面找到另外三个数与 nums[a] 相加等于 target。
+            但是后面还有更大的 nums[a]，
+            可能出现四数之和等于 target 的情况，
+            所以还需要继续枚举，continue 外层循环。
+
+            作者：灵茶山艾府
+            链接：https://leetcode.cn/problems/4sum/solutions/2344514/ji-zhi-you-hua-ji-yu-san-shu-zhi-he-de-z-1f0b/
+            来源：力扣（LeetCode）
+            著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+            */
+            if(nums[i]+nums[n-3]+nums[n-2]+nums[n-1]<target)
+            {
+                continue;
+            }
             for(int j=i+1;j<n-2;j++)
             {
 
                 if(j>i+1&&nums[j]==nums[j-1])//这里是j>i+1,而不是j>0
+                {
+                    continue;
+                }
+                /*
+                设 s=nums[a]+nums[b]+nums[b+1]+nums[b+2]。
+                如果 s>target，由于数组已经排序，后面无论怎么选，
+                选出的四个数的和不会比 s 还小，
+                所以后面不会找到等于 target 的四数之和了。
+                所以只要 s>target，就可以直接 break。
+
+                作者：灵茶山艾府
+                链接：https://leetcode.cn/problems/4sum/solutions/2344514/ji-zhi-you-hua-ji-yu-san-shu-zhi-he-de-z-1f0b/
+                来源：力扣（LeetCode）
+                著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+                */
+                if(nums[i]+nums[j]+nums[j+1]+nums[j+2]>target)
+                {
+                    break;
+                }
+                if(nums[i]+nums[j]+nums[n-2]+nums[n-1]<target)
                 {
                     continue;
                 }
