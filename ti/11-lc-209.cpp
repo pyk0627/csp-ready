@@ -8,6 +8,7 @@ public:
         for(int r=0;r<n;r++)
         {
             s+=nums[r];
+            //缩小窗口后依然合法就继续缩小 
             while(s-nums[l]>=target)
             {
                 s-=nums[l];
