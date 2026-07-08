@@ -17,6 +17,8 @@ public:
 
             //cout<<"s[l]:"<<s[l]<<endl;
 
+            //不断缩小窗口直到满足条件为止
+            //用while而不是if
             while(cnt>1)
             {
                 l++;
