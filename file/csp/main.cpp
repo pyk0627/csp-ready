@@ -1,58 +1,65 @@
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <string>
+#include <map>
 using namespace std;
 
 class Solution {
 public:
-    int triangleNumber(vector<int>& nums) {
-        int res=0;
-        int len=nums.size();
-        sort(nums.begin(),nums.end());
-        for(int i=0;i<len-2;i++)
+    string minWindow(string s, string t) {
+        int n=s.size();
+        if(n<t.size())
         {
-            int j=i+1;
-            int k=len-1;
-            while(j<k)
+            return "";
+        }
+        int l=0;
+        map<char,int> cntt;
+        for(int i=0;i<t.size();i++)
+        {
+            cntt[t[i]]++;
+        }
+        int cnt1=0;
+        int ansl=0;
+        int ansr=n;
+        string ans;
+        map<char,int> cnts;
+        for(int r=0;r<n;r++)
+        {
+            cout<<"s[r]:"<<s[r]<<endl;
+            cnts[s[r]]++;
+            cout<<"cnts[s[r]]:"<<cnts[s[r]]<<endl;
+            if(cntt[s[r]]>0 && cnts[s[r]]<=cntt[s[r]])
             {
-                cout<<"nums[i]:"<<nums[i]<<endl;
-                cout<<"nums[j]:"<<nums[j]<<endl;
-                cout<<"nums[k]:"<<nums[k]<<endl;
-                cout<<"--------"<<endl;
-                if(nums[i]+nums[j]>nums[k])
+                cnt1++;
+            }
+            while(cnt1>=t.size())
+            {
+                if(r-l+1<ansr-ansl+1)
                 {
-                    cout<<nums[i]<<","<<nums[j]<<","<<nums[k]<<endl;
-                    res+=k-j;
-                    k--;
-                }else
-                {
-                    if(nums[i]+nums[j]>nums[k-1])
-                    {
-                        res+=k-1-j;
-                    }
-                    j++;
-
+                    ansl=l;
+                    ansr=r;
                 }
+                if(cntt[s[l]]>0)
+                {
+                    cnts[s[l]]--;
+                    cnt1--;
+                }
+                l++;
             }
         }
-        return res;
+        if(ansr==n)
+        {
+            return "";
+        }
+        ans = s.substr(ansl,ansr-ansl+1);
+        return ans;
     }
 };
 
 int main() {
     Solution sol;
-    vector<int> nums;
-    string line;
-
-    cout << "请输入整数数组，以空格分隔，按回车结束: ";
-    getline(cin, line);
-    istringstream iss(line);
-    int num;
-    while (iss >> num) {
-        nums.push_back(num);
-    }
-
-    int result = sol.triangleNumber(nums);
-    cout << "有效三角形的个数为: " << result << endl;
-
+    string s = "bba";
+    string t = "ab";
+    string result = sol.minWindow(s, t);
+    cout << result << endl;
     return 0;
 }
