@@ -1,65 +1,30 @@
-#include <iostream>
-#include <string>
-#include <map>
+#include <bits/stdc++.h>
 using namespace std;
-
 class Solution {
 public:
-    string minWindow(string s, string t) {
-        int n=s.size();
-        if(n<t.size())
+    int findMin(vector<int>& nums) {
+        int idxmax = ranges::max_element(nums)-nums.begin();
+        if(idxmax==nums.size()-1 && nums[0]==nums[idxmax])
         {
-            return "";
+            idxmax=0;
         }
-        int l=0;
-        map<char,int> cntt;
-        for(int i=0;i<t.size();i++)
+        while(idxmax<nums.size()-1 && nums[idxmax+1]==nums[idxmax])
         {
-            cntt[t[i]]++;
+            idxmax++;
         }
-        int cnt1=0;
-        int ansl=0;
-        int ansr=n;
-        string ans;
-        map<char,int> cnts;
-        for(int r=0;r<n;r++)
+        if(idxmax==nums.size()-1)
         {
-            cout<<"s[r]:"<<s[r]<<endl;
-            cnts[s[r]]++;
-            cout<<"cnts[s[r]]:"<<cnts[s[r]]<<endl;
-            if(cntt[s[r]]>0 && cnts[s[r]]<=cntt[s[r]])
-            {
-                cnt1++;
-            }
-            while(cnt1>=t.size())
-            {
-                if(r-l+1<ansr-ansl+1)
-                {
-                    ansl=l;
-                    ansr=r;
-                }
-                if(cntt[s[l]]>0)
-                {
-                    cnts[s[l]]--;
-                    cnt1--;
-                }
-                l++;
-            }
-        }
-        if(ansr==n)
+            return nums[0];
+        }else
         {
-            return "";
+            return nums[idxmax+1];
         }
-        ans = s.substr(ansl,ansr-ansl+1);
-        return ans;
     }
 };
-
-int main() {
+int main()
+{
     Solution sol;
-    string s = "bba";
-    string t = "ab";
-    string result = sol.minWindow(s, t);
-    cout << result << endl;
+    vector<int> nums={2,2,2,0,1};
+    cout<<sol.findMin(nums)<<endl;
     return 0;
 }
