@@ -2,95 +2,37 @@
 
 【新题目】
 
-1373. 二叉搜索子树的最大键值和
-尝试过
-困难
+105. 从前序与中序遍历序列构造二叉树
+中等
 相关标签
 premium lock icon
 相关企业
-提示
-给你一棵以 root 为根的 二叉树 ，请你返回 任意 二叉搜索子树的最大键值和。
+给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
 
-二叉搜索树的定义如下：
-
-任意节点的左子树中的键值都 小于 此节点的键值。
-任意节点的右子树中的键值都 大于 此节点的键值。
-任意节点的左子树和右子树都是二叉搜索树。
  
 
-示例 1：
+示例 1:
 
 
+输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+输出: [3,9,20,null,null,15,7]
+示例 2:
 
-输入：root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
-输出：20
-解释：键值为 3 的子树是和最大的二叉搜索树。
-示例 2：
-
-
-
-输入：root = [4,3,null,1,2]
-输出：2
-解释：键值为 2 的单节点子树是和最大的二叉搜索树。
-示例 3：
-
-输入：root = [-4,-2,-5]
-输出：0
-解释：所有节点键值都为负数，和最大的二叉搜索树为空。
-示例 4：
-
-输入：root = [2,1,3]
-输出：6
-示例 5：
-
-输入：root = [5,4,8,3,null,6,3]
-输出：7
+输入: preorder = [-1], inorder = [-1]
+输出: [-1]
  
 
-提示：
+提示:
 
-每棵树有 1 到 40000 个节点。
-每个节点的键值在 [-4 * 10^4 , 4 * 10^4] 之间。
+1 <= preorder.length <= 3000
+inorder.length == preorder.length
+-3000 <= preorder[i], inorder[i] <= 3000
+preorder 和 inorder 均 无重复 元素
+inorder 均出现在 preorder
+preorder 保证 为二叉树的前序遍历序列
+inorder 保证 为二叉树的中序遍历序列
 【我的代码】
-class Solution {
-    int ans=0;
-    void dfs(TreeNode* root,int num)
-    {
-        cout<<root->val<<endl;
-        if(root==nullptr)
-        {
-            return;
-        }
-        int f=1;
-        if((root->left!=nullptr&&root->left->val>=root->val) ||
-            (root->right!=nullptr&&root->right->val<=root->val))
-        {
-            f=0;
-        }
-        if(f)
-        {
-            num+=root->val;
-        }
-        if(num>ans)
-        {
-            ans=num;
-        }
-        cout<<"ans:"<<ans<<endl;
-        if(root->left!=nullptr)
-        {
-            dfs(root->left,num);
-        }
-        if(root->right!=nullptr)
-        {
-            dfs(root->right,num);
-        }
-    }
-public:
-    int maxSumBST(TreeNode* root) {
-        dfs(root,0);
-        return ans;
-    }
-};
+无
 
 【我的卡点】
-我的代码每次递归的时候，不能保存之间左子树加过的数值，怎么办？
+不知道如何下手，没有思路
