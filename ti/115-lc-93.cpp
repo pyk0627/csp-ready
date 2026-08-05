@@ -59,3 +59,24 @@ public:
         return ans;
     }
 };
+/*
+c++中怎么截取string字符串
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string s = "Hello World";
+
+    string s1 = s.substr(6);      // 从下标 6 开始截取到结尾
+    cout << s1 << endl;           // 输出: World
+
+    string s2 = s.substr(0, 5);   // 从下标 0 开始，截取 5 个字符
+    cout << s2 << endl;           // 输出: Hello
+
+    return 0;
+}
+
+
+*/
