@@ -42,3 +42,31 @@ public:
         return ans;
     }
 };
+/*
+c++中，string类型的str可以进行+=一个string
+类型的数据，可以-=一个string类型的数据吗
+
+#include <iostream>
+#include <string>
+
+void removeSuffix(std::string& str, const std::string& suffix)
+{
+    if (str.size() >= suffix.size() &&
+        str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0)
+    {
+        str.erase(str.size() - suffix.size());
+    }
+}
+
+int main()
+{
+    std::string str = "hello world";
+    std::string suffix = " world";
+
+    removeSuffix(str, suffix);
+
+    std::cout << str << std::endl; // hello
+}
+
+
+*/
