@@ -6,7 +6,7 @@ public:
         {
             return 0;
         }
-        int s=sum/2;
+        int s=sum/2;//背包容量
         vector memo(nums.size(),vector<int>(s+1,-1));
         auto dfs=[&](this auto&& dfs,int i,int c)->int
         {

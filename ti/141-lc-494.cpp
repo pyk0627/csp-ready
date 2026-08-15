@@ -6,7 +6,7 @@ public:
         {
             return 0;
         }
-        int s=sum/2;
+        int s=sum/2;//背包容量
         vector memo(nums.size()+1,vector<int>(s+1));
         memo[0][0]=1;
         for(int i=0;i<nums.size();i++)
