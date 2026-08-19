@@ -3,6 +3,19 @@ public:
     int longestCommonSubsequence(string text1, string text2) {
         int n=text1.size();
         int m=text2.size();
+
+        // vector<int> dp(m+1);
+        // for(int i=0;i<n;i++)
+        // {
+        //     int pre=dp[0];//用pre记录左上的状态
+        //     for(int j=0;j<m;j++)
+        //     {
+        //         int temp=dp[j+1];//记录当前的状态作为下一个左上的状态
+        //         dp[j+1]=text1[i]==text2[j]?pre+1:max(dp[j+1],dp[j]);
+        //         pre=temp;//更新左上的状态
+        //     }
+        // }
+        // return dp[m];
         vector<vector<int>> dp(n+1,vector<int>(m+1));
         dp[0][0]=0;
         //因为之前的递归是从底向上递归，利用了字串的结果，所以改成递推的时候
