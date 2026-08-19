@@ -11,6 +11,7 @@ public:
         {
             for(int j=0;j<=m-1;j++)
             {
+                //三目运算符dp[i+1][j+1]=text1[i]==text2[j]?dp[i][j]+1:max(dp[i][j+1],dp[i+1][j]);
                 if(text1[i]==text2[j])
                 {
                     dp[i+1][j+1]=dp[i][j]+1;
