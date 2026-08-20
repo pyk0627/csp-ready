@@ -5,7 +5,7 @@ public:
         int m=word2.size();
         vector<int> dp(m+1);
         // vector<vector<int>> dp(n+1,vector<int>(m+1));
-        for(int j=0;j<m;j++)//初始化第0行，word1为空串的时候
+        for(int j=0;j<=m;j++)//初始化第0行，word1为空串的时候
         {
             dp[j]=j;
         }
