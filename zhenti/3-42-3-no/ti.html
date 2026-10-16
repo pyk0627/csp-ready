@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ti</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ti</h1>
+</header>
+<p>已修复格式，完整内容如下：</p>
+<hr />
+<h1 id="死锁优化">死锁优化</h1>
+<blockquote>
+<p>第 42 次 CCF CSP 认证（2026 年 5 月 31 日）第 3 题<br />
+题号：202606-3（部分题解博客也记作 202605-3 / CSP202605C）<br />
+原题中的时间轴示意图略。</p>
+</blockquote>
+<hr />
+<h2 id="题目背景">题目背景</h2>
+<p>西西艾弗岛上，小 F
+的团队每天都在忙碌着。他们在解决了进程与接口的通信问题后，开始着手进行进程间资源使用与调度系统的开发。项目开展一段时间后，他们又把你这个资深测试员叫了过来。按照惯例，他们给出了这次资源调度系统的运行模型，并请求你为其编写程序进行模拟。</p>
+<hr />
+<h2 id="题目描述">题目描述</h2>
+<p>模型中需要考虑的对象有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个进程与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+种资源。进程由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1,2,\dots,n</annotation></semantics></math>
+依次标号，资源由
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">1,2,\dots,m</annotation></semantics></math>
+依次标号。</p>
+<p>该系统运行的时间单位称作 <strong>段</strong>。每一段分为
+<strong>申请</strong>、<strong>处理</strong>、<strong>释放</strong>
+三个部分，本题亦分别称其为
+<strong>段首</strong>、<strong>段中</strong>、<strong>段末</strong>。</p>
+<ul>
+<li><strong>申请部分（段首）</strong>：专门处理进程对资源的申请行为；</li>
+<li><strong>处理部分（段中）</strong>：每个进程会产生各自的收益；</li>
+<li><strong>释放部分（段末）</strong>：专门负责将资源从进程中释放到待使用区。</li>
+</ul>
+<p>系统会依次运行第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+段、第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+段、……、第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>100</mn></msup><annotation encoding="application/x-tex">10^{100}</annotation></semantics></math>
+段，视为足够多。每一段内会依次运行申请部分、处理部分与释放部分。初始时，所有资源都处于
+<strong>待使用状态</strong>。</p>
+<hr />
+<h2 id="属性说明">属性说明</h2>
+<p>第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个进程会从第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">st_i</annotation></semantics></math>
+段首开始活动。</p>
+<p>第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个进程有一个长度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>i</mi></msub><annotation encoding="application/x-tex">k_i</annotation></semantics></math>
+的运行任务列表。列表可以由长度为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>i</mi></msub><annotation encoding="application/x-tex">k_i</annotation></semantics></math>
+的二元组序列表示：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>…</mi><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+(a_{i,1}, t_{i,1}), (a_{i,2}, t_{i,2}), \dots, (a_{i,k_i}, t_{i,k_i})
+</annotation></semantics></math></p>
+<p>其中：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">a_{i,j}</annotation></semantics></math>
+表示第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个进程第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+次运行任务前会申请的资源编号；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">t_{i,j}</annotation></semantics></math>
+表示第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个进程第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+次运行任务的持续段数。</li>
+</ul>
+<p>保证对于同一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>j</mi><mn>1</mn></msub><mo>≠</mo><msub><mi>j</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">j_1 \ne j_2</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>j</mi><mn>1</mn></msub></mrow></msub><mo>≠</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>j</mi><mn>2</mn></msub></mrow></msub></mrow><annotation encoding="application/x-tex">a_{i,j_1} \ne a_{i,j_2}</annotation></semantics></math>。</p>
+<hr />
+<h2 id="单进程行为与收益">单进程行为与收益</h2>
+<p>一个进程分为两种状态：</p>
+<ol type="1">
+<li><strong>资源申请状态</strong></li>
+<li><strong>任务运行状态</strong></li>
+</ol>
+<p>刚从某段首开始活动的进程初始为 <strong>资源申请状态</strong>。</p>
+<ul>
+<li>在某一段首，一个处于 <strong>资源申请状态</strong>
+的进程会向其当前所需资源发起申请。</li>
+<li>在某一段中，一个处于 <strong>任务运行状态</strong>
+的进程会获得收益，收益量等于其在该段段首运行完毕后拥有的资源数量。</li>
+</ul>
+<p>在没有任何干扰、资源可以由某
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程任意自由使用的情况下，其理想行为如下：</p>
+<ol type="1">
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程于第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">st_i</annotation></semantics></math>
+段首开始活动，并同时对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">a_{i,1}</annotation></semantics></math>
+号资源发起申请。由于没有任何干扰，资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">a_{i,1}</annotation></semantics></math>
+被其占有。同时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程切换为任务运行状态。</p></li>
+<li><p>接下来的，包括段首申请成功的这一段在内的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">t_{i,1}</annotation></semantics></math>
+段里，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程处于任务运行状态。根据定义，每一段中其会获得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+的收益。该阶段在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub><mo>+</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">st_i + t_{i,1} - 1</annotation></semantics></math>
+段末结束，同时
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程切换为资源申请状态。</p></li>
+<li><p>在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub><mo>+</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">st_i + t_{i,1}</annotation></semantics></math>
+段首，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">a_{i,2}</annotation></semantics></math>
+号资源发起申请，资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">a_{i,2}</annotation></semantics></math>
+被
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程占有。同时，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程再次切换为任务运行状态。同理，进程继续运行
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">t_{i,2}</annotation></semantics></math>
+段并获得收益。以此类推，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程可以顺利执行所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>i</mi></msub><annotation encoding="application/x-tex">k_i</annotation></semantics></math>
+个任务，过程中不断切换自身状态。</p></li>
+<li><p>最终，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程会在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>+</mo><mi>…</mi><mo>+</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">st_i + (t_{i,1} + t_{i,2} + \dots + t_{i,k_i}) - 1</annotation></semantics></math>
+段末完成所有运行任务并停止活动。在这一段末，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程会释放所有其使用的资源，也即资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub></mrow><annotation encoding="application/x-tex">a_{i,1}, a_{i,2}, \dots, a_{i,k_i}</annotation></semantics></math>
+均不再被占有，而是变为待使用状态。</p></li>
+</ol>
+<p>根据定义，上述过程中，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程从开始活动到结束的理想总收益为：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>+</mo><mn>2</mn><mo>×</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>+</mo><mi>…</mi><mo>+</mo><msub><mi>k</mi><mi>i</mi></msub><mo>×</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub></mrow><annotation encoding="application/x-tex">
+1 \times t_{i,1} + 2 \times t_{i,2} + \dots + k_i \times t_{i,k_i}
+</annotation></semantics></math></p>
+<p>即对
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+从
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>i</mi></msub><annotation encoding="application/x-tex">k_i</annotation></semantics></math>
+求和：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>k</mi><mi>i</mi></msub></munderover><mi>j</mi><mo>×</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
+\sum_{j=1}^{k_i} j \times t_{i,j}
+</annotation></semantics></math></p>
+<p>因为从第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+次申请成功开始，到第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">j+1</annotation></semantics></math>
+次申请前，共
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">t_{i,j}</annotation></semantics></math>
+段，进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+在每一段的段中都会获得
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+的收益。</p>
+<blockquote>
+<p>原题附图 2：一个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">m=4</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mn>1</mn></msub><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">st_1=2</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">k_1=3</annotation></semantics></math>、运行任务列表为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(1,3),(3,4),(4,3)</annotation></semantics></math>
+的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+号进程的运行示例。时间轴上每一个小区间表示一个完整的段。</p>
+</blockquote>
+<hr />
+<h2 id="协同运行">协同运行</h2>
+<p>然而，任意资源在任意一段都只能被至多一个进程占有。敏锐的你注意到，当多个进程同时活动时，可能在同一段首对同一资源发起申请，就会产生冲突。对此，小
+F 对模型进行说明：</p>
+<p>考察在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+段段首，若多个处于资源申请状态的进程同时对资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+发起申请：</p>
+<ol type="1">
+<li>若资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+已被占有，则所有进程都会申请失败；</li>
+<li>否则，资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+处于待使用状态。设这些进程中编号最小者的编号为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>，则进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+申请成功并占有资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>，其它进程均申请失败。</li>
+</ol>
+<p>补充说明：</p>
+<ul>
+<li>如果一个进程申请成功，则它会自然切换到任务运行状态，并继续接下来的任务。</li>
+<li>如果一个进程申请失败，它不会切换到任务运行状态。根据定义，该段段中不产生收益。它会在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">s+1</annotation></semantics></math>
+段首继续对资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+发起申请。</li>
+</ul>
+<blockquote>
+<p>原题附有在上例基础上新增
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+号进程后的示意图。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+号进程参数为：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">st_2=3</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">k_2=2</annotation></semantics></math>，运行任务列表为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mo>,</mo><mn>6</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo>,</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(2,6),(4,2)</annotation></semantics></math>。</p>
+</blockquote>
+<hr />
+<h2 id="死锁优化方案">死锁优化方案</h2>
+<p>小 F
+指出，如果只是这样设计资源的调配，会导致死锁现象的发生。也即两个进程分别占有两种资源，在未释放这两种资源的情况下，又同时对对方占有的另一种资源发起申请，就会导致死循环，永远无法正常运行下去。</p>
+<p>为了解决这个问题，小 F 设计了 A、B、C 共 3
+种不同的优化方案。<strong>每个进程最多采取一种方案</strong>。</p>
+<p>我们将不采取任何方案的进程与采取 A、B、C 三种方案的进程依次称为：</p>
+<ul>
+<li>X 类进程：普通进程；</li>
+<li>A 类进程：特殊进程；</li>
+<li>B 类进程：特殊进程；</li>
+<li>C 类进程：特殊进程。</li>
+</ul>
+<p>每一个 A、B、C 类进程都会拥有一个额外属性
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math>，称作
+<strong>忍耐限度</strong>。</p>
+<p>设某进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+刚开始活动，或刚运行完上一任务，在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+段段首首次对某资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+发起申请。如果第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
+段段首至第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>+</mo><msub><mi>w</mi><mi>i</mi></msub><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">s+w_i-1</annotation></semantics></math>
+段首发起的共
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>i</mi></msub><annotation encoding="application/x-tex">w_i</annotation></semantics></math>
+次申请均失败，则根据类型的不同，进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+会有如下行为。</p>
+<hr />
+<h3 id="a-类进程">A 类进程</h3>
+<p>如果进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+为 A 类，其会在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>+</mo><msub><mi>w</mi><mi>i</mi></msub><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">s+w_i-1</annotation></semantics></math>
+段末释放目前占有的所有资源，令其变成待使用状态。自身仍保持资源申请状态，持续申请资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>，直到申请成功的某一段首切换为当前任务的任务运行状态。</p>
+<p>值得说明的是，在之后某一段首终于获得资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+之后，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+号进程执行任务的收益显然会因为其放弃行为大打折扣。但是其并不会重新申请之前放弃的资源，而是以低收益继续运行自身接下来的任务。如果之后仍然有“卡住”的情况，其仍会按照
+A 类进程特性选择放弃。</p>
+<hr />
+<h3 id="b-类进程">B 类进程</h3>
+<p>如果进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+为 B 类，其会在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>+</mo><msub><mi>w</mi><mi>i</mi></msub><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">s+w_i-1</annotation></semantics></math>
+段首申请失败后直接放弃资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>，并将自身切换为任务运行状态，从该段段首直接开始进入对应的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">t_{i,j}</annotation></semantics></math>
+段运行。</p>
+<p>显然，该放弃行为也会导致进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+最终收益低于其理想收益。</p>
+<hr />
+<h3 id="c-类进程">C 类进程</h3>
+<p>如果进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+为 C 类，其会在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>+</mo><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">s+w_i</annotation></semantics></math>
+段首直接无视资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+当前的归属，直接强行申请成功，并将资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+占有。同时，原来占有资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+的进程不再占有资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>。该
+C 类进程切换为任务运行状态运行下去。</p>
+<p>补充规则：</p>
+<ul>
+<li><p>设原来占有资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+的进程为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+可能为任意进程，例如是上一段首刚刚抢到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+的另一 C
+类进程，或者某因为申请另一资源正卡住的普通进程等等。该抢夺行为除了可能会影响进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+的收益以外，不会打断或影响其任何运行状态。</p></li>
+<li><p>如果在同一段首对某资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+同时有多个 C 类进程的抢夺行为发生，则恰有编号最大的 C
+类进程的抢夺行为成功，其它 C 类进程的抢夺行为均失败。抢夺失败的 C
+类进程不占有资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>，但也切换为任务运行状态运行下去。</p></li>
+<li><p>如果资源
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+在同一段首还有其它任何类型进程的申请需求，则响应 C
+类进程的抢夺行为，其它申请均失败。</p></li>
+</ul>
+<p>题目的样例中涉及了特殊进程的行为，你可以结合样例解释与相应图片理解上述关键信息。</p>
+<hr />
+<h2 id="系统结束条件">系统结束条件</h2>
+<p>当所有进程均执行完全部任务并停止活动时，系统运行结束。</p>
+<p>注意，如果系统没有在第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>100</mn></msup><annotation encoding="application/x-tex">10^{100}</annotation></semantics></math>
+段末前运行结束，其会强行结束自身运行。所有进程的运行收益不受影响。</p>
+<p>现在，小 F 给你提供了
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+以及
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个进程的所有信息。请你对上述过程进行模拟，并最终输出各个进程的运行收益与运行段数。</p>
+<hr />
+<h2 id="输入格式">输入格式</h2>
+<p>从标准输入读入数据。</p>
+<p>输入的第一行包含两个正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n,m</annotation></semantics></math>，表示进程数量与资源种类数。</p>
+<p>接下来的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+行，第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+行输入第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+个进程的全部信息。每行首先输入一个
+<code>X</code>、<code>A</code>、<code>B</code>、<code>C</code>
+中的字符，表示进程类型。</p>
+<h3 id="普通进程">普通进程</h3>
+<p>如果输入为字符 <code>X</code>，代表进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+为普通进程。接下来输入两个正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">st_i, k_i</annotation></semantics></math>，然后输入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msub><mi>k</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">2k_i</annotation></semantics></math>
+个正整数，依次代表：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub></mrow><annotation encoding="application/x-tex">
+a_{i,1}, t_{i,1}, a_{i,2}, t_{i,2}, \dots, a_{i,k_i}, t_{i,k_i}
+</annotation></semantics></math></p>
+<h3 id="特殊进程">特殊进程</h3>
+<p>否则，代表进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+为对应的 A、B、C 类特殊进程。接下来输入三个正整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub><mo>,</mo><msub><mi>w</mi><mi>i</mi></msub><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">st_i, w_i, k_i</annotation></semantics></math>，然后输入
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msub><mi>k</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">2k_i</annotation></semantics></math>
+个正整数，依次代表：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>k</mi><mi>i</mi></msub></mrow></msub></mrow><annotation encoding="application/x-tex">
+a_{i,1}, t_{i,1}, a_{i,2}, t_{i,2}, \dots, a_{i,k_i}, t_{i,k_i}
+</annotation></semantics></math></p>
+<p>所有同一行的不同信息均由一个空格分隔。</p>
+<hr />
+<h2 id="输出格式">输出格式</h2>
+<p>输出到标准输出。</p>
+<p>请你输出
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+行，每行输出用空格隔开的两个整数。</p>
+<p>第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+行的第一个整数表示系统运行结束后，进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+的总运行收益。</p>
+<p>第
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+行的第二个整数表示进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+从开始活动到停止活动的持续段数。如果进程
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+未正常结束，而是因为系统强行终止而结束，请输出 <code>-1</code>。</p>
+<hr />
+<h2 id="样例-1">样例 1</h2>
+<h3 id="输入">输入</h3>
+<pre class="text"><code>3 5
+X 1 3 1 3 3 4 4 3
+B 2 2 4 2 1 1 2 5 3 3 2
+C 3 3 2 1 2 4 2</code></pre>
+<h3 id="输出">输出</h3>
+<pre class="text"><code>15 10
+13 10
+6 10</code></pre>
+<h3 id="解释">解释</h3>
+<p>下面列出该样例中涉及的特殊事件：</p>
+<ul>
+<li><p>第 3–4 段首，2 号进程申请资源 1 均失败，故其放弃申请 1
+号资源，从第 4 段中起仅占用资源 2 运行第二个任务，至第 5 段末。</p></li>
+<li><p>第 9–10 段首，2 号进程申请资源 3 均失败，故其放弃申请 3
+号资源，从第 10 段中起仅占用资源 2、5 运行第四个任务，至第 11
+段末。</p></li>
+<li><p>第 3–5 段首，3 号进程申请资源 1 均失败，故于第 6 段首将 1
+号资源抢夺并占有 1 号资源，运行第一个任务，至第 7 段末；第 8 段首与 1
+号进程同时申请 4 号资源，因为编号较大失败，持续到第 10 段首。第 11
+段首，3 号进程抢夺了刚刚在第 10 段末被 1 号进程释放到待使用区的 4
+号资源，并占用资源 1、4 运行第二个任务，至第 12 段末。</p></li>
+</ul>
+<p>从图中可以看出，三个进程的运行段数均为 10。</p>
+<hr />
+<h2 id="样例-2">样例 2</h2>
+<p>见题目目录下的 <code>2.in</code> 与 <code>2.ans</code>。</p>
+<hr />
+<h2 id="子任务">子任务</h2>
+<ul>
+<li>对于前 40% 的测试数据，保证不存在特殊类型的进程。</li>
+<li>对于另外 40% 的测试数据，保证不存在 C 类进程。</li>
+<li>对于 100%
+的测试数据，保证：<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">1 \le n \le 10</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>m</mi><mo>≤</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">1 \le m \le 40</annotation></semantics></math>；对于所有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1 \le i \le n</annotation></semantics></math>，有
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>s</mi><msub><mi>t</mi><mi>i</mi></msub><mo>≤</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">1 \le st_i \le 20</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><msub><mi>w</mi><mi>i</mi></msub><mo>≤</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">1 \le w_i \le 20</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><msub><mi>k</mi><mi>i</mi></msub><mo>≤</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">1 \le k_i \le 40</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>≤</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">1 \le t_{i,j} \le 20</annotation></semantics></math>，<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>≤</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">1 \le a_{i,j} \le m</annotation></semantics></math>；且保证对于同一个进程内的不同任务：若
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>j</mi><mn>1</mn></msub><mo>≠</mo><msub><mi>j</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">j_1 \ne j_2</annotation></semantics></math>，则
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>j</mi><mn>1</mn></msub></mrow></msub><mo>≠</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><msub><mi>j</mi><mn>2</mn></msub></mrow></msub></mrow><annotation encoding="application/x-tex">a_{i,j_1} \ne a_{i,j_2}</annotation></semantics></math>。</li>
+</ul>
+<hr />
+<h2 id="说明">说明</h2>
+<p>以上题面整理自对官方题面的完整转载，包括 billma 博客 “csp42-deadlock
+死锁” 与 CSDN “CSP202605C 死锁优化”
+题解，并与截图中的可见文字逐段核对一致。原题另配有若干时间轴示意图，这里从略。</p>
+</body>
+</html>
