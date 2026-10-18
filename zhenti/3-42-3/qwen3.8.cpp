@@ -137,7 +137,9 @@ int main() {
                 }
 
                 // 【第4点优化】：使用 OWNER_FREE
-                if (owner[res] != OWNER_FREE && owner[res] != max_grabber_id) {
+                if( owner[res] != OWNER_FREE && 
+                     owner[res] != max_grabber_id)
+                {
                     int victim_id = owner[res];
                     // 【第2点优化】：通过 ID 找到对应的进程，用点号 (.) 代替箭头 (->)
                     Process& victim = processes[victim_id - 1];
